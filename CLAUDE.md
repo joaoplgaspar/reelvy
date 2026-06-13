@@ -46,5 +46,8 @@ firebase deploy --only firestore:rules,functions   # deploy (precisa Blaze + sec
 - [`docs/MECANICAS-FASES.md`](docs/MECANICAS-FASES.md) — as mecânicas que diferenciam (Fases 1-3: compatibilidade, spoiler-safe, decisão em grupo tipo Tinder).
 - [`docs/CUSTOS-FASE-0.md`](docs/CUSTOS-FASE-0.md) — custos de infra por faixa de usuários.
 
+## Skills (playbooks sob demanda)
+A **implementação** de cada mecânica das Fases 1-3 vive como skill em `.claude/skills/` — carrega **sob demanda** (só a `description` fica sempre visível; o corpo entra quando a skill é acionada). O *porquê/sequência* fica em `docs/MECANICAS-FASES.md`; o *como construir* na skill. Hoje: `mechanic-compatibility` (Fase 1).
+
 ## Git
 Trabalhar em branch própria; nunca commitar `.env`, `node_modules`, `dist`, `functions/lib`. Rodar `tsc --noEmit` + `build` antes de push.
