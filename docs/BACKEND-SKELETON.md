@@ -27,11 +27,12 @@ reelvy/
     ├── lib/queryClient.ts  TanStack Query (cache no cliente)
     ├── data/media.ts       tipos + adaptadores media_meta → CatalogItem
     ├── data/remote.ts      camada REMOTA (Firestore + Functions), espelha queries.ts
-    └── data/useCatalog.ts  hooks (useShelves/useSearch/useMedia) c/ fallback local
+    ├── data/useCatalog.ts  hooks (useShelves/useSearch/useMedia) c/ fallback local
+    └── data/useLibrarySync.ts  sync da biblioteca local ↔ Firestore (logado)
 ```
 
-> ✅ **Já plugado:** Auth (login + gate) e a **leitura de catálogo** (Home/Busca/Detalhe via `useCatalog.ts`). Os hooks tentam o remoto e **caem no catálogo local** em erro/vazio — então o app funciona sem projeto Firebase (modo local) e **acende com dado real** assim que você deploya + semeia.
-> ⏳ **Falta plugar:** a **biblioteca** pessoal (`useStore`/localStorage → subcoleção `library`) — é o último swap.
+> ✅ **Já plugado:** Auth (login + gate), a **leitura de catálogo** (Home/Busca/Detalhe via `useCatalog.ts`) e a **biblioteca pessoal** (sync local ↔ Firestore via `useLibrarySync.ts`). Os hooks de catálogo caem no local em erro/vazio — o app funciona sem projeto Firebase (modo local) e **acende com dado real** assim que você deploya + semeia.
+> 🎉 Com Auth + catálogo + biblioteca plugados, o swap da Fase 0 está **completo** no código.
 
 ## Ligar o backend (passo a passo)
 
@@ -55,7 +56,7 @@ A costura é **assinatura igual** entre `queries.ts` (local) e `remote.ts` (remo
 | Home (prateleiras) | ✅ feito | `useShelves()` → `remoteShelves()` (fallback local) |
 | Busca | ✅ feito | `useSearch()` → Function `searchMedia` (fallback local) |
 | Detalhe | ✅ feito | `useMedia()` → `remoteById()`/`resolveMedia` (fallback local) |
-| Biblioteca pessoal | ⏳ falta | `useStore`/localStorage → subcoleção `library` (`getLibrary`/`setLibraryEntry`/`removeLibraryEntry` já existem em `remote.ts`) |
+| Biblioteca pessoal | ✅ feito | `useLibrarySync` (hydrate + write-through); `markOnboarded` cobre login em device novo; signout limpa o local |
 
 > Os hooks só chamam o remoto quando `isFirebaseConfigured` é true; em erro/vazio caem no local. Ou seja: **sem deploy, tudo roda local; com deploy + seed, vira dado real** sem tocar nas telas.
 

@@ -15,6 +15,7 @@ export default function Profile() {
   const library = useStore((s) => s.library);
   const picks = useStore((s) => s.picks);
   const reset = useStore((s) => s.reset);
+  const clearUserData = useStore((s) => s.clearUserData);
   const { mode, user } = useAuth();
   const [showCard, setShowCard] = useState(false);
 
@@ -56,7 +57,7 @@ export default function Profile() {
       {mode === 'firebase' && user && (
         <>
           <p className="muted-line">Conectado como {user.email ?? user.displayName ?? 'você'}.</p>
-          <button className="btn btn-link" onClick={() => signOutUser()}>Sair</button>
+          <button className="btn btn-link" onClick={async () => { await signOutUser(); clearUserData(); }}>Sair</button>
         </>
       )}
       {mode === 'local' && (

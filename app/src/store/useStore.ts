@@ -21,6 +21,9 @@ type State = {
   setProgress: (id: string, progress: number) => void;
   remove: (id: string) => void;
   reset: () => void;
+  mergeLibrary: (entries: Record<string, Entry>) => void;
+  markOnboarded: () => void;
+  clearUserData: () => void;
 };
 
 export const useStore = create<State>()(
@@ -59,6 +62,13 @@ export const useStore = create<State>()(
         }),
 
       reset: () => set({ onboarded: false, picks: [], library: {} }),
+
+      // sync remoto: mescla o que veio do Firestore no estado local
+      mergeLibrary: (entries) => set((s) => ({ library: { ...s.library, ...entries } })),
+      // ter conta implica ter passado o onboarding (ex.: login em outro dispositivo)
+      markOnboarded: () => set({ onboarded: true }),
+      // signout: limpa dados pessoais do dispositivo (re-hidrata do remoto no próximo login)
+      clearUserData: () => set({ library: {}, picks: [] }),
     }),
     { name: 'reelvy-store' },
   ),

@@ -174,7 +174,7 @@ npm run dev               # abre em http://localhost:5173
 
 ## 9. Roadmap (próximos passos, em ordem)
 
-1. **Backend real** — 🟡 *esqueleto scaffoldado* (Functions `resolveMedia`/`prewarmDiscovery`, regras, `firebase.json`, ponte cliente em `app/src/lib/` + `data/remote.ts` + TanStack Query). Falta **ligar**: criar o projeto Firebase, preencher `app/.env`, setar o secret `TMDB_TOKEN`, deployar e fazer o swap `queries → remote` por tela. Passo a passo em [`docs/BACKEND-SKELETON.md`](docs/BACKEND-SKELETON.md).
+1. **Backend real** — 🟢 *plugado no código*: Auth (signup adiado + gate), catálogo (Home/Busca/Detalhe via `useCatalog.ts`, com fallback local) e biblioteca (`useLibrarySync`, sync local ↔ Firestore). Falta só o **deploy/seed** (seu): criar o projeto Firebase, preencher `app/.env`, setar o secret `TMDB_TOKEN`, `firebase deploy` e rodar `prewarmDiscovery`. Passo a passo em [`docs/BACKEND-SKELETON.md`](docs/BACKEND-SKELETON.md).
 2. **Catálogo real** (TMDB + AniList) via o cache `media_meta`.
 3. **Detalhe com metadados ricos** (sinopse, episódios, elenco, provedores reais).
 4. **Card Tier List** (S/A/B/C/D) — fechar o trio de formatos virais.

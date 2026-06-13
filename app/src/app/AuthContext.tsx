@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from '
 import type { User } from 'firebase/auth';
 import { isFirebaseConfigured } from '../lib/firebase';
 import { onAuthChange } from '../lib/auth';
+import { useStore } from '../store/useStore';
 
 type AuthMode = 'local' | 'firebase';
 
@@ -26,6 +27,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return onAuthChange((u) => {
       setUser(u);
       setReady(true);
+      if (u) useStore.getState().markOnboarded(); // conta logada = onboarding feito
     });
   }, []);
 
