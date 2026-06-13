@@ -1,16 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useSearch } from '../data/useCatalog';
+import { useDebounced } from '../lib/useDebounced';
 import Poster from '../components/Poster';
-
-// Debounce: não dispara a Function de busca a cada tecla.
-function useDebounced(value: string, ms = 300): string {
-  const [v, setV] = useState(value);
-  useEffect(() => {
-    const t = setTimeout(() => setV(value), ms);
-    return () => clearTimeout(t);
-  }, [value, ms]);
-  return v;
-}
 
 export default function Search() {
   const [q, setQ] = useState('');

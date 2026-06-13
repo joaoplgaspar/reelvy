@@ -7,7 +7,7 @@ export default function AppShell() {
   const onboarded = useStore((s) => s.onboarded);
   const { mode, user, ready } = useAuth();
 
-  if (!onboarded) return <Navigate to="/onboarding" replace />;
+  if (!onboarded) return <Navigate to="/comecar" replace />;
 
   // Modo Firebase: o app exige conta (signup adiado). Modo local segue sem gate.
   if (mode === 'firebase') {

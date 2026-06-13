@@ -166,9 +166,9 @@ body {
   z-index: 50;
 }
 .navtab { display: flex; flex-direction: column; align-items: center; gap: 3px; background: none; border: none; color: var(--muted); font-family: inherit; font-size: 10px; font-weight: 700; text-decoration: none; cursor: pointer; padding: 4px 8px; }
-.navicon { font-size: 18px; line-height: 1; filter: grayscale(0.4) opacity(0.8); }
+.navicon { display: flex; align-items: center; justify-content: center; line-height: 1; }
+.navicon svg { width: 22px; height: 22px; }
 .navtab.is-on { color: var(--text); }
-.navtab.is-on .navicon { filter: none; }
 .navtab-plus { background: var(--accent); width: 46px; height: 46px; border-radius: 50%; color: #fff; font-size: 26px; display: flex; align-items: center; justify-content: center; margin-top: -14px; box-shadow: 0 8px 20px -6px var(--accent); }
 
 /* ---------- Páginas ---------- */
@@ -221,6 +221,22 @@ body {
 .tab { flex: none; background: var(--surface); border: 1px solid var(--line); color: var(--muted); border-radius: 99px; padding: 8px 14px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: inherit; }
 .tab.is-on { background: var(--surface2); color: var(--text); border-color: var(--surface2); }
 .empty { color: var(--muted); font-size: 14px; text-align: center; padding: 40px 20px; line-height: 1.5; }
+
+/* ---------- Landing (estrutura; visual no pass de layout) ---------- */
+.landing { justify-content: space-between; }
+.landing-top { padding-top: 16vh; }
+.landing-sub { color: var(--muted); font-size: 15px; line-height: 1.5; margin-top: 14px; max-width: 340px; }
+.landing-cta { display: flex; flex-direction: column; gap: 10px; width: 100%; }
+
+/* ---------- Quick-log ---------- */
+.log-list { display: flex; flex-direction: column; gap: 12px; margin-top: 14px; }
+.log-row { display: flex; gap: 12px; }
+.log-poster { width: 54px; aspect-ratio: 2 / 3; object-fit: cover; border-radius: 8px; flex-shrink: 0; background: var(--surface); }
+.log-meta { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.log-title { font-weight: 700; font-size: 14px; line-height: 1.3; }
+.log-chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.chip { background: var(--surface); border: 1px solid var(--line); color: var(--text); border-radius: 999px; padding: 6px 12px; font-size: 12px; font-weight: 700; font-family: inherit; cursor: pointer; }
+.chip.is-on { background: var(--accent); border-color: var(--accent); color: #fff; }
 
 /* perfil */
 .profile-id { border-radius: 16px; padding: 20px; background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 22%, var(--surface)), var(--surface)); border: 1px solid var(--line); }

@@ -7,8 +7,11 @@ import Library from './pages/Library';
 import Profile from './pages/Profile';
 import Onboarding from './pages/Onboarding';
 import Signup from './pages/Signup';
+import Landing from './pages/Landing';
+import QuickLog from './pages/QuickLog';
 
 export const router = createBrowserRouter([
+  { path: '/comecar', element: <Landing /> },
   { path: '/onboarding', element: <Onboarding /> },
   { path: '/entrar', element: <Signup /> },
   {
@@ -18,6 +21,7 @@ export const router = createBrowserRouter([
       { index: true, element: <Home /> },
       { path: 'buscar', element: <Search /> },
       { path: 'biblioteca', element: <Library /> },
+      { path: 'log', element: <QuickLog /> },
       { path: 'perfil', element: <Profile /> },
       { path: 'titulo/:type/:id', element: <Detail /> },
     ],
