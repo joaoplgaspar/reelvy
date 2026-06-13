@@ -47,7 +47,9 @@ firebase deploy --only firestore:rules,functions   # deploy (precisa Blaze + sec
 - [`docs/CUSTOS-FASE-0.md`](docs/CUSTOS-FASE-0.md) — custos de infra por faixa de usuários.
 
 ## Skills (playbooks sob demanda)
-A **implementação** de cada mecânica das Fases 1-3 vive como skill em `.claude/skills/` — carrega **sob demanda** (só a `description` fica sempre visível; o corpo entra quando a skill é acionada). O *porquê/sequência* fica em `docs/MECANICAS-FASES.md`; o *como construir* na skill. Hoje: `mechanic-compatibility` (Fase 1).
+A **implementação** de cada mecânica das Fases 1-3 vive como skill em `.claude/skills/` — carrega **sob demanda** (só a `description` fica sempre visível; o corpo entra quando a skill é acionada). O *porquê/sequência* fica em `docs/MECANICAS-FASES.md`; o *como construir* na skill.
+- Mecânicas: `mechanic-compatibility` (Fase 1) · `mechanic-spoiler-safe` (Fase 2) · `mechanic-group-decision` (Fase 3 — o "We Watch"/Tinder).
+- Build: `add-cloud-function` (adicionar Function gen2 + secret + deploy).
 
 ## Git
 Trabalhar em branch própria; nunca commitar `.env`, `node_modules`, `dist`, `functions/lib`. Rodar `tsc --noEmit` + `build` antes de push.
