@@ -16,6 +16,7 @@ export interface MediaMeta {
   ids: { tmdb?: number; anilist?: number; mal?: number };
   source: 'tmdb' | 'anilist';
   ttlClass: 'static' | 'airing';
+  providers?: { name: string; logo: string }[];
   updatedAt: number;
 }
 
@@ -65,5 +66,21 @@ export function discoveryToCatalogItem(it: DiscoveryItem): CatalogItem {
     poster: posterUrl(it.type, it.poster),
     posterData: '',
     genres: [],
+  };
+}
+
+/** Detalhe rico (CatalogItem + campos extras do media_meta). */
+export interface MediaDetail extends CatalogItem {
+  overview?: string;
+  episodes?: number;
+  providers?: { name: string; logo: string }[];
+}
+
+export function toMediaDetail(m: MediaMeta): MediaDetail {
+  return {
+    ...toCatalogItem(m),
+    overview: m.overview || undefined,
+    episodes: m.episodes,
+    providers: m.providers,
   };
 }

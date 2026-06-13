@@ -3,6 +3,7 @@ import { isFirebaseConfigured } from '../lib/firebase';
 import { shelves as localShelves, byId as localById, search as localSearch, type Shelf } from './queries';
 import { remoteShelves, remoteSearch, remoteById } from './remote';
 import type { CatalogItem } from './catalog';
+import type { MediaDetail } from './media';
 
 // Liga o remoto quando o Firebase está configurado; senão, catálogo local.
 // Em erro/vazio o remoto cai no local — o app nunca fica em branco antes do deploy/seed.
@@ -43,7 +44,7 @@ export function useSearch(q: string) {
 
 /** Detalhe (read-through Firestore + resolveMedia) com fallback local. */
 export function useMedia(mediaId: string) {
-  return useQuery<CatalogItem | undefined>({
+  return useQuery<MediaDetail | undefined>({
     queryKey: ['media', mediaId, REMOTE],
     queryFn: async () => {
       const local = localById(mediaId);

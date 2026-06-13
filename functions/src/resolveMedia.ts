@@ -27,7 +27,8 @@ export const resolveMedia = onCall(
     if (snap.exists) {
       const m = snap.data() as MediaMeta;
       const ttl = TTL[m.ttlClass] ?? TTL.static;
-      if (Date.now() - m.updatedAt < ttl) return m; // hit fresco
+      // só é hit se for o doc COMPLETO (o prewarm grava um resumo sem overview)
+      if (m.overview && Date.now() - m.updatedAt < ttl) return m;
     }
 
     const core = type === 'anime' ? await fetchAniList(id) : await fetchTmdb(type, id);

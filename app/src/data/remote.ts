@@ -1,7 +1,7 @@
 import { collection, doc, getDoc, getDocs, setDoc, deleteDoc } from 'firebase/firestore';
 import { httpsCallable } from 'firebase/functions';
 import { getDb, getFns } from '../lib/firebase';
-import { toCatalogItem, discoveryToCatalogItem, type MediaMeta, type DiscoveryItem, type LibraryEntry } from './media';
+import { toMediaDetail, discoveryToCatalogItem, type MediaMeta, type MediaDetail, type DiscoveryItem, type LibraryEntry } from './media';
 import type { CatalogItem } from './catalog';
 import type { Shelf } from './queries';
 
@@ -33,14 +33,17 @@ export async function remoteShelves(): Promise<Shelf[]> {
 }
 
 /** Detalhe: read-through — Firestore primeiro, Function resolveMedia no cache-miss. */
-export async function remoteById(mediaId: string): Promise<CatalogItem | undefined> {
+export async function remoteById(mediaId: string): Promise<MediaDetail | undefined> {
   const [type, idStr] = mediaId.split(':');
   const snap = await getDoc(doc(getDb(), 'media_meta', mediaId));
-  if (snap.exists()) return toCatalogItem(snap.data() as MediaMeta);
+  if (snap.exists()) {
+    const m = snap.data() as MediaMeta;
+    if (m.overview) return toMediaDetail(m); // doc completo (não só o resumo do prewarm)
+  }
 
   const resolve = httpsCallable<{ type: string; id: number }, MediaMeta>(getFns(), 'resolveMedia');
   const res = await resolve({ type, id: Number(idStr) });
-  return toCatalogItem(res.data);
+  return toMediaDetail(res.data);
 }
 
 /** Busca: Function searchMedia (TMDB + AniList) → CatalogItem[]. */

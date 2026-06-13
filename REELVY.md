@@ -176,12 +176,12 @@ npm run dev               # abre em http://localhost:5173
 
 1. **Backend real** — 🟢 *plugado no código*: Auth (signup adiado + gate), catálogo (Home/Busca/Detalhe via `useCatalog.ts`, com fallback local) e biblioteca (`useLibrarySync`, sync local ↔ Firestore). Falta só o **deploy/seed** (seu): criar o projeto Firebase, preencher `app/.env`, setar o secret `TMDB_TOKEN`, `firebase deploy` e rodar `prewarmDiscovery`. Passo a passo em [`docs/BACKEND-SKELETON.md`](docs/BACKEND-SKELETON.md).
 2. **Catálogo real** (TMDB + AniList) via o cache `media_meta`.
-3. **Detalhe com metadados ricos** (sinopse, episódios, elenco, provedores reais).
+3. **Detalhe com metadados ricos** — 🟢 sinopse + progresso por episódio + provedores reais (TMDB watch/providers); falta elenco/similares.
 4. **Card Tier List** (S/A/B/C/D) — fechar o trio de formatos virais.
 5. ~~Renomear a pasta `prototype/` → `app/`~~ ✅ **feito** (reestruturação jun/2026; legado CRA removido).
 6. **Deploy** (Vercel/Cloudflare) + travar **marca/handles** do nome.
 7. **Validar viralização** do card (a métrica-norte) — postar nos nichos de anime/cinema.
-8. **Fase 1+** (compatibilidade → spoiler-safe → decisão em grupo).
+8. **Fase 1+** (compatibilidade → spoiler-safe → decisão em grupo tipo Tinder) — speccado em [`docs/MECANICAS-FASES.md`](docs/MECANICAS-FASES.md).
 
 ### 9.1 Backlog de UX / produto (levantado jun/2026)
 
@@ -218,4 +218,5 @@ A maioria já tem spec em `docs/TELAS-FASE-0.md` — falta **construir**:
 - [`functions/README.md`](functions/README.md) — como configurar secret, emular e deployar as Functions.
 - [`docs/CUSTOS-FASE-0.md`](docs/CUSTOS-FASE-0.md) — custos de infra por faixa de usuários.
 - [`docs/TELAS-FASE-0.md`](docs/TELAS-FASE-0.md) — espec de telas com CRO/UX e referências.
+- [`docs/MECANICAS-FASES.md`](docs/MECANICAS-FASES.md) — as mecânicas que diferenciam (Fases 1-3: compatibilidade, spoiler-safe, decisão em grupo tipo Tinder).
 - [`app/README.md`](app/README.md) — como rodar o app.

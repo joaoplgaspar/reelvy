@@ -18,9 +18,10 @@ async function tmdb<T>(path: string): Promise<T> {
 /** Detalhe de filme/série → core do MediaMeta. */
 export async function fetchTmdb(type: MediaType, id: number): Promise<MediaMetaCore> {
   const kind = type === 'tv' ? 'tv' : 'movie';
-  const d = await tmdb<Record<string, any>>(`/${kind}/${id}?language=pt-BR`);
+  const d = await tmdb<Record<string, any>>(`/${kind}/${id}?language=pt-BR&append_to_response=watch/providers`);
   const date: string = d.release_date ?? d.first_air_date ?? '';
   const airing = d.status === 'Returning Series' || d.in_production === true;
+  const flat: Record<string, any>[] = d['watch/providers']?.results?.BR?.flatrate ?? [];
   return {
     title: d.title ?? d.name ?? '',
     poster: d.poster_path ?? '',
@@ -32,6 +33,7 @@ export async function fetchTmdb(type: MediaType, id: number): Promise<MediaMetaC
     ids: { tmdb: id },
     source: 'tmdb',
     ttlClass: airing ? 'airing' : 'static',
+    providers: flat.slice(0, 6).map((p) => ({ name: p.provider_name, logo: `https://image.tmdb.org/t/p/w92${p.logo_path}` })),
   };
 }
 

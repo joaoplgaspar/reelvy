@@ -14,6 +14,7 @@ export interface MediaMeta {
   ids: { tmdb?: number; anilist?: number; mal?: number };
   source: 'tmdb' | 'anilist';
   ttlClass: 'static' | 'airing';
+  providers?: { name: string; logo: string }[];
   updatedAt: number; // epoch ms
 }
 
