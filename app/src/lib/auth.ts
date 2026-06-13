@@ -26,13 +26,13 @@ async function ensureUserDoc(user: User): Promise<void> {
 
 export async function signInWithGoogle(): Promise<User> {
   const cred = await signInWithPopup(getAuthClient(), new GoogleAuthProvider());
-  await ensureUserDoc(cred.user);
+  await ensureUserDoc(cred.user).catch((e) => console.warn('Perfil users/{uid} não gravado — Firestore configurado?', e));
   return cred.user;
 }
 
 export async function signUpWithEmail(email: string, password: string): Promise<User> {
   const cred = await createUserWithEmailAndPassword(getAuthClient(), email, password);
-  await ensureUserDoc(cred.user);
+  await ensureUserDoc(cred.user).catch((e) => console.warn('Perfil users/{uid} não gravado — Firestore configurado?', e));
   return cred.user;
 }
 
