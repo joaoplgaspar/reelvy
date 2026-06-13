@@ -24,7 +24,7 @@
 | Cache cliente | TanStack Query + persist IndexedDB | Corta leituras Firestore em 50–80% |
 | Backend | Firebase Auth + Firestore + Functions (gen2) | Já decidido; esconde chaves nas Functions |
 | Hosting | Cloudflare Pages / Vercel (estático) | Free tier; economiza banda |
-| Catálogo | TMDB (filme/série) + AniList (anime) | Gratuitos |
+| Catálogo | TMDB (filme/série) + AniList (anime) | Grátis no não-comercial (TMDB: US$149/mês ao monetizar — ver CUSTOS) |
 | Card | `html-to-image` (client-side) | Custo zero de servidor |
 
 ---
