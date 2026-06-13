@@ -1,46 +1,38 @@
-# Getting Started with Create React App
+# Reelvy
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+App social de quem assiste de **tudo** — anime + série + filme num lar só. Anime-first, mobile-first. O diferencial não é "mais um tracker": é o **"junto"** — compatibilidade de gosto, social à prova de spoiler e decisão em grupo (construídos em fases).
 
-## Available Scripts
+> 📄 **Documento-mestre** (visão, decisões e roadmap): [`REELVY.md`](REELVY.md).
+> A memória do assistente não viaja com o repositório — o `REELVY.md` é a **fonte da verdade portátil**. Mantenha-o atualizado.
 
-In the project directory, you can run:
+## Estrutura do repositório
 
-### `npm start`
+```
+reelvy/  (repo: github.com/joaoplgaspar/we_watch)
+├── REELVY.md          ← documento-mestre (decisões & roadmap)
+├── README.md          ← este arquivo
+├── docs/              ← planejamento da Fase 0 (arquitetura, telas, custos)
+└── app/               ← o app Reelvy — React + Vite + TS  ⭐
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Quando o backend entrar (próximo grande passo), `functions/` + `firebase.json` + `firestore.rules` ficam como irmãos de `app/`.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Rodar o app
 
-### `npm test`
+```bash
+cd app
+npm install
+npm run dev          # http://localhost:5173
+# no celular (mesma rede):
+npm run dev -- --host
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Node 22+. Na primeira vez o app abre o **onboarding**; ao terminar, entra no app. O estado é local (zustand + localStorage); o backend (Firebase Auth + Firestore + Functions) é o próximo passo — ver roadmap no [`REELVY.md`](REELVY.md).
 
-### `npm run build`
+## Fase 0 (atual)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Tracker solo bonito + **card viral** (o motor de aquisição; métrica-norte = K-factor). Especificações:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+- [`docs/ARQUITETURA-FASE-0.md`](docs/ARQUITETURA-FASE-0.md) — schema Firestore, cache, Cloud Functions, regras de segurança.
+- [`docs/TELAS-FASE-0.md`](docs/TELAS-FASE-0.md) — telas com racional de CRO/UX e referências.
+- [`docs/CUSTOS-FASE-0.md`](docs/CUSTOS-FASE-0.md) — custos de infraestrutura por faixa de usuários.

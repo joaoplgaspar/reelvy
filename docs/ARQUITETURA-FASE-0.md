@@ -1,4 +1,4 @@
-# We Watch — Arquitetura da Fase 0
+# Reelvy — Arquitetura da Fase 0
 
 > Fundação técnica do tracker solo + card viral.
 > Esquema de dados, camada de cache, Cloud Functions e regras de segurança.

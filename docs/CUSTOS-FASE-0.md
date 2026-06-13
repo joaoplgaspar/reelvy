@@ -1,4 +1,4 @@
-# We Watch — Material de Custos (Fase 0)
+# Reelvy — Material de Custos (Fase 0)
 
 > Estimativa de infraestrutura para a Fase 0 (tracker solo + card viral).
 > Última atualização: junho/2026. Valores em USD/mês.

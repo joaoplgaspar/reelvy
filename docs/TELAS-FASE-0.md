@@ -1,4 +1,4 @@
-# We Watch — Espec de Telas da Fase 0 (CRO + UX/UI)
+# Reelvy — Espec de Telas da Fase 0 (CRO + UX/UI)
 
 > Fluxo, telas e racional de conversão do tracker solo + card viral.
 > Mobile-first. Cada decisão é justificada por CRO e por uma referência de sucesso.
@@ -201,7 +201,7 @@ Nav inferior fixa (thumb-zone). O **➕ Log central** é a ação mais proeminen
 ## 6. 🔁 O gerador de card (o motor viral — detalhe)
 
 - **Templates:** Identidade de Gosto · Top 10 do ano · **Tier list** (builder S/A/B/C/D) · Assistindo agora · Wrapped (sazonal/anual).
-- **Customização ("a pessoa no comando"):** tema/cor, título, capa. *Mas sempre com a cara do We Watch* — consistência de marca = todo card compartilhado vira anúncio reconhecível.
+- **Customização ("a pessoa no comando"):** tema/cor, título, capa. *Mas sempre com a cara do Reelvy* — consistência de marca = todo card compartilhado vira anúncio reconhecível.
 - **Saída:** PNG em alta + **URL com deep-link e OG preview** (o share mostra a imagem E linka de volta).
 - **Atribuição obrigatória:** `@handle` + logo + link no card. **Sem isso, a tese viral inteira falha** — o card é a propaganda.
 - **Enquadramento de desafio:** *"Monte seu top — desafie seus amigos"* (gatilho social).
