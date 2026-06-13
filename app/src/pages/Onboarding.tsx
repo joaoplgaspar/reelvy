@@ -5,6 +5,7 @@ import TapGrid from '../components/TapGrid';
 import CardStudio from '../components/CardStudio';
 import { CatalogItem } from '../data/catalog';
 import { useStore } from '../store/useStore';
+import { useAuth } from '../app/AuthContext';
 
 type Step = 'worlds' | 'grid' | 'reveal';
 
@@ -13,11 +14,13 @@ export default function Onboarding() {
   const [worlds, setWorlds] = useState<string[]>(['movie', 'tv', 'anime']);
   const [selected, setSelected] = useState<CatalogItem[]>([]);
   const complete = useStore((s) => s.completeOnboarding);
+  const { mode } = useAuth();
   const nav = useNavigate();
 
   function finish() {
     complete(selected, worlds);
-    nav('/');
+    // signup adiado: modo Firebase salva criando conta; local entra direto.
+    nav(mode === 'firebase' ? '/entrar' : '/');
   }
 
   return (
@@ -41,8 +44,10 @@ export default function Onboarding() {
             <h1 className="title">Seu card</h1>
           </div>
           <CardStudio picks={selected} />
-          <button className="btn btn-primary onboarding-cta" onClick={finish}>Entrar no Reelvy →</button>
-          <p className="hint">No app real, aqui entra o <b>criar conta</b> pra salvar tudo.</p>
+          <button className="btn btn-primary onboarding-cta" onClick={finish}>Salvar meu perfil →</button>
+          {mode === 'local' && (
+            <p className="hint">Salvo <b>neste dispositivo</b>. O login real liga com o Firebase.</p>
+          )}
         </div>
       )}
     </div>

@@ -8,7 +8,7 @@ App social de quem assiste de **tudo** — anime + série + filme num lar só. A
 ## Estrutura do repositório
 
 ```
-reelvy/  (repo: github.com/joaoplgaspar/we_watch)
+reelvy/  (repo: github.com/joaoplgaspar/reelvy)
 ├── REELVY.md          ← documento-mestre (decisões & roadmap)
 ├── README.md          ← este arquivo
 ├── docs/              ← planejamento da Fase 0 (arquitetura, telas, custos)

@@ -3,6 +3,8 @@ import { useStore } from '../store/useStore';
 import { byId } from '../data/queries';
 import { CatalogItem } from '../data/catalog';
 import { deriveArchetype } from '../lib/archetypes';
+import { useAuth } from '../app/AuthContext';
+import { signOutUser } from '../lib/auth';
 import CardStudio from '../components/CardStudio';
 
 function Stat({ n, l }: { n: number; l: string }) {
@@ -13,6 +15,7 @@ export default function Profile() {
   const library = useStore((s) => s.library);
   const picks = useStore((s) => s.picks);
   const reset = useStore((s) => s.reset);
+  const { mode, user } = useAuth();
   const [showCard, setShowCard] = useState(false);
 
   const lovedItems = (picks.length ? picks : Object.keys(library))
@@ -50,7 +53,15 @@ export default function Profile() {
         <div className="profile-card"><CardStudio picks={lovedItems} /></div>
       )}
 
-      <button className="btn btn-link" onClick={reset}>Refazer onboarding (dev)</button>
+      {mode === 'firebase' && user && (
+        <>
+          <p className="muted-line">Conectado como {user.email ?? user.displayName ?? 'você'}.</p>
+          <button className="btn btn-link" onClick={() => signOutUser()}>Sair</button>
+        </>
+      )}
+      {mode === 'local' && (
+        <button className="btn btn-link" onClick={reset}>Refazer onboarding (dev)</button>
+      )}
     </div>
   );
 }

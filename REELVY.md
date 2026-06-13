@@ -90,7 +90,7 @@ Detalhe completo em [`docs/TELAS-FASE-0.md`](docs/TELAS-FASE-0.md).
 
 ### Layout do repositório
 ```
-reelvy/  (repo: github.com/joaoplgaspar/we_watch)
+reelvy/  (repo: github.com/joaoplgaspar/reelvy)
 ├── REELVY.md            ← este documento (decisões & roadmap)
 ├── README.md            ← visão geral + como rodar
 ├── docs/                ← planejamento (arquitetura, custos, telas)
@@ -146,8 +146,8 @@ Detalhe completo (schema, functions, regras de segurança) em [`docs/ARQUITETURA
 Tudo já está versionado (app, docs, handoff). Para rodar em outra máquina:
 
 ```bash
-git clone https://github.com/joaoplgaspar/we_watch.git
-cd we_watch/app
+git clone https://github.com/joaoplgaspar/reelvy.git
+cd reelvy/app
 npm install
 npm run dev               # abre em http://localhost:5173
 ```

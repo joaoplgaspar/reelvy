@@ -6,9 +6,11 @@ import Detail from './pages/Detail';
 import Library from './pages/Library';
 import Profile from './pages/Profile';
 import Onboarding from './pages/Onboarding';
+import Signup from './pages/Signup';
 
 export const router = createBrowserRouter([
   { path: '/onboarding', element: <Onboarding /> },
+  { path: '/entrar', element: <Signup /> },
   {
     path: '/',
     element: <AppShell />,
