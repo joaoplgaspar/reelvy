@@ -219,4 +219,6 @@ A maioria já tem spec em `docs/TELAS-FASE-0.md` — falta **construir**:
 - [`docs/CUSTOS-FASE-0.md`](docs/CUSTOS-FASE-0.md) — custos de infra por faixa de usuários.
 - [`docs/TELAS-FASE-0.md`](docs/TELAS-FASE-0.md) — espec de telas com CRO/UX e referências.
 - [`docs/MECANICAS-FASES.md`](docs/MECANICAS-FASES.md) — as mecânicas que diferenciam (Fases 1-3: compatibilidade, spoiler-safe, decisão em grupo tipo Tinder).
+- [`docs/DESIGN-SYSTEM.md`](docs/DESIGN-SYSTEM.md) — tokens, componentes reutilizáveis e classes/padrões de UI.
+- [`CLAUDE.md`](CLAUDE.md) — índice de contexto do projeto (carrega automático nas sessões do Claude Code).
 - [`app/README.md`](app/README.md) — como rodar o app.
