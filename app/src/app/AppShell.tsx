@@ -1,8 +1,29 @@
-import { Outlet, Navigate } from 'react-router-dom';
+import { Navigate, useOutlet, useLocation } from 'react-router-dom';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { useStore } from '../store/useStore';
 import { useAuth } from './AuthContext';
 import { useLibrarySync } from '../data/useLibrarySync';
 import BottomNav from './BottomNav';
+
+// Transição de rota (entrada + saída) entre as telas do app.
+function AnimatedOutlet() {
+  const outlet = useOutlet();
+  const { pathname } = useLocation();
+  const reduce = useReducedMotion();
+  return (
+    <AnimatePresence mode="wait" initial={false}>
+      <motion.div
+        key={pathname}
+        initial={{ opacity: 0, y: reduce ? 0 : 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: reduce ? 0 : -8 }}
+        transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+      >
+        {outlet}
+      </motion.div>
+    </AnimatePresence>
+  );
+}
 
 export default function AppShell() {
   const onboarded = useStore((s) => s.onboarded);
@@ -24,7 +45,7 @@ export default function AppShell() {
   return (
     <div className="app">
       <div className="app-scroll">
-        <Outlet />
+        <AnimatedOutlet />
       </div>
       <BottomNav />
     </div>

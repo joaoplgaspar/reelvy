@@ -1,5 +1,5 @@
 // Gerado automaticamente. 'poster' = URL remota (grade, crespa). 'posterData' = base64 (card, exporta sem CORS).
-export type CatalogItem = { id: string; type: 'movie' | 'tv' | 'anime'; title: string; poster: string; posterData: string; genres: string[] };
+export type CatalogItem = { id: string; type: 'movie' | 'tv' | 'anime'; title: string; poster: string; posterData: string; genres: string[]; rating?: number };
 
 export const CATALOG: CatalogItem[] = [
   {

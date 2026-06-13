@@ -3,6 +3,7 @@ import { CatalogItem } from '../data/catalog';
 import { useStore } from '../store/useStore';
 import { useShelves } from '../data/useCatalog';
 import Poster from '../components/Poster';
+import Hero from '../components/Hero';
 
 function Shelf({ title, items }: { title: string; items: CatalogItem[] }) {
   return (
@@ -22,12 +23,14 @@ export default function Home() {
     .filter(([, e]) => e.status === 'watching')
     .map(([id]) => byId(id))
     .filter(Boolean) as CatalogItem[];
+  const spotlight = shelves[0]?.items[0];
 
   return (
     <div className="page">
       <header className="page-head">
         <div className="brand">Reelvy</div>
       </header>
+      {spotlight && <Hero item={spotlight} />}
       {watching.length > 0 && <Shelf title="Continuar assistindo" items={watching} />}
       {shelves.map((s) => <Shelf key={s.key} title={s.title} items={s.items} />)}
       {isPending && shelves.length === 0 && <p className="muted-line">Carregando catálogo…</p>}

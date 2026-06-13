@@ -17,6 +17,7 @@ export interface MediaMeta {
   source: 'tmdb' | 'anilist';
   ttlClass: 'static' | 'airing';
   providers?: { name: string; logo: string }[];
+  rating?: number; // nota da comunidade, 0-10
   updatedAt: number;
 }
 
@@ -27,6 +28,7 @@ export interface DiscoveryItem {
   title: string;
   poster: string;
   year?: number;
+  rating?: number;
 }
 
 /** Status pessoal — espelha users/{uid}/library/{type:id}. */
@@ -54,6 +56,7 @@ export function toCatalogItem(m: MediaMeta): CatalogItem {
     poster: posterUrl(m.type, m.poster),
     posterData: '', // base64 só é gerado pro card; vazio na navegação
     genres: m.genres,
+    rating: m.rating,
   };
 }
 
@@ -66,6 +69,7 @@ export function discoveryToCatalogItem(it: DiscoveryItem): CatalogItem {
     poster: posterUrl(it.type, it.poster),
     posterData: '',
     genres: [],
+    rating: it.rating,
   };
 }
 

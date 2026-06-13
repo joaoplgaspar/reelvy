@@ -22,9 +22,13 @@ const MEDIA_FIELDS = `
   seasonYear
   episodes
   status
+  averageScore
   coverImage { large }
   idMal
 `;
+
+// averageScore do AniList é 0-100 → normaliza pra 0-10.
+const score10 = (s: number | undefined): number | undefined => (s ? Math.round(s) / 10 : undefined);
 
 function mapMedia(m: Record<string, any>): MediaMetaCore {
   const airing = m.status === 'RELEASING';
@@ -39,6 +43,7 @@ function mapMedia(m: Record<string, any>): MediaMetaCore {
     ids: { anilist: m.id, mal: m.idMal ?? undefined },
     source: 'anilist',
     ttlClass: airing ? 'airing' : 'static',
+    rating: score10(m.averageScore),
   };
 }
 
@@ -50,6 +55,7 @@ function toDiscovery(m: Record<string, any>): DiscoveryItem {
     title: m.title?.english ?? m.title?.romaji ?? '',
     poster: m.coverImage?.large ?? '',
     year: m.seasonYear ?? 0,
+    rating: score10(m.averageScore),
   };
 }
 
@@ -66,7 +72,7 @@ export async function fetchAniListSeasonal(): Promise<DiscoveryItem[]> {
     `query {
        Page(perPage: 20) {
          media(type: ANIME, sort: TRENDING_DESC, status: RELEASING) {
-           id title { romaji english } seasonYear coverImage { large }
+           id title { romaji english } seasonYear averageScore coverImage { large }
          }
        }
      }`,
@@ -80,7 +86,7 @@ export async function searchAniList(q: string): Promise<DiscoveryItem[]> {
     `query ($q: String) {
        Page(perPage: 12) {
          media(type: ANIME, search: $q, sort: SEARCH_MATCH) {
-           id title { romaji english } seasonYear coverImage { large }
+           id title { romaji english } seasonYear averageScore coverImage { large }
          }
        }
      }`,

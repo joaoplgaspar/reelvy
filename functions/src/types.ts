@@ -15,6 +15,7 @@ export interface MediaMeta {
   source: 'tmdb' | 'anilist';
   ttlClass: 'static' | 'airing';
   providers?: { name: string; logo: string }[];
+  rating?: number; // nota da comunidade, 0-10
   updatedAt: number; // epoch ms
 }
 
@@ -25,6 +26,7 @@ export interface DiscoveryItem {
   title: string;
   poster: string;
   year: number;
+  rating?: number;
 }
 
 /** Os campos que os providers resolvem (o caller completa type/id/updatedAt). */

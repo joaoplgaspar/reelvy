@@ -15,6 +15,9 @@ async function tmdb<T>(path: string): Promise<T> {
   return (await res.json()) as T;
 }
 
+const round1 = (n: number | undefined): number | undefined =>
+  n ? Math.round(n * 10) / 10 : undefined;
+
 /** Detalhe de filme/série → core do MediaMeta. */
 export async function fetchTmdb(type: MediaType, id: number): Promise<MediaMetaCore> {
   const kind = type === 'tv' ? 'tv' : 'movie';
@@ -34,6 +37,7 @@ export async function fetchTmdb(type: MediaType, id: number): Promise<MediaMetaC
     source: 'tmdb',
     ttlClass: airing ? 'airing' : 'static',
     providers: flat.slice(0, 6).map((p) => ({ name: p.provider_name, logo: `https://image.tmdb.org/t/p/w92${p.logo_path}` })),
+    rating: round1(d.vote_average),
   };
 }
 
@@ -45,6 +49,7 @@ function toDiscovery(type: MediaType, r: Record<string, any>): DiscoveryItem {
     title: r.title ?? r.name ?? '',
     poster: r.poster_path ?? '',
     year: date ? Number(date.slice(0, 4)) : 0,
+    rating: round1(r.vote_average),
   };
 }
 
