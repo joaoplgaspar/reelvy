@@ -7,13 +7,7 @@ import { useAuth } from '../app/AuthContext';
 import Poster from '../components/Poster';
 import Icon from '../components/Icon';
 
-function greet(): string {
-  const h = new Date().getHours();
-  if (h < 6) return 'Boa madrugada';
-  if (h < 12) return 'Bom dia';
-  if (h < 18) return 'Boa tarde';
-  return 'Boa noite';
-}
+const TYPE_LABEL: Record<CatalogItem['type'], string> = { movie: 'Filme', tv: 'Série', anime: 'Anime' };
 
 function Shelf({ title, items }: { title: string; items: CatalogItem[] }) {
   return (
@@ -26,47 +20,54 @@ function Shelf({ title, items }: { title: string; items: CatalogItem[] }) {
   );
 }
 
-// Tile rápido estilo Spotify (atalho horizontal: capa + título).
-function QuickTile({ item }: { item: CatalogItem }) {
-  return (
-    <Link to={`/titulo/${item.type}/${item.id.split(':')[1]}`} className="quick-tile">
-      <img src={item.poster} alt="" loading="lazy" />
-      <span className="quick-tile-title">{item.title}</span>
-    </Link>
-  );
-}
-
 export default function Home() {
-  const library = useStore((s) => s.library);
   const { user } = useAuth();
   const { data: shelves = [], isPending } = useShelves();
+  const library = useStore((s) => s.library);
+  const setStatus = useStore((s) => s.setStatus);
 
-  // Atalhos: o que a pessoa está vendo / quer ver; se vazio (novo), cai no topo da 1ª prateleira.
-  const active = Object.entries(library)
-    .filter(([, e]) => e.status === 'watching' || e.status === 'planned')
-    .map(([id]) => byId(id))
-    .filter(Boolean) as CatalogItem[];
-  const quick = (active.length ? active : shelves[0]?.items ?? []).slice(0, 6);
+  const featured = shelves[0]?.items[0];
+  const inList = featured ? library[featured.id]?.status === 'planned' : false;
 
   return (
-    <div className="page home">
-      <header className="home-top">
-        <h1 className="home-greet">{greet()}</h1>
-        <Link to="/perfil" className="home-avatar" aria-label="Perfil">
-          {user?.photoURL
-            ? <img src={user.photoURL} alt="" referrerPolicy="no-referrer" />
-            : <Icon name="profile" size={20} />}
-        </Link>
-      </header>
-
-      {quick.length > 0 && (
-        <div className="quick-grid">
-          {quick.map((i) => <QuickTile key={i.id} item={i} />)}
+    <div className="home-nf">
+      {featured ? (
+        <div className="nf-hero">
+          <img className="nf-hero-img" src={featured.poster} alt={featured.title} />
+          <div className="nf-hero-grad" />
+          <div className="nf-hero-top">
+            <span className="nf-brand">REELVY</span>
+            <Link to="/perfil" className="home-avatar" aria-label="Perfil">
+              {user?.photoURL
+                ? <img src={user.photoURL} alt="" referrerPolicy="no-referrer" />
+                : <Icon name="profile" size={20} />}
+            </Link>
+          </div>
+          <div className="nf-hero-body">
+            <span className="nf-kicker">Em destaque</span>
+            <h1 className="nf-hero-title">{featured.title}</h1>
+            <div className="nf-hero-tags">
+              {TYPE_LABEL[featured.type]}
+              {featured.rating ? `  •  ★ ${featured.rating.toFixed(1)}` : ''}
+            </div>
+            <div className="nf-hero-actions">
+              <Link to={`/titulo/${featured.type}/${featured.id.split(':')[1]}`} className="nf-btn nf-btn-primary">
+                Ver detalhes
+              </Link>
+              <button className="nf-btn nf-btn-ghost" onClick={() => setStatus(featured.id, 'planned')}>
+                {inList ? '✓ Na lista' : '+ Minha lista'}
+              </button>
+            </div>
+          </div>
         </div>
+      ) : (
+        <header className="page-head" style={{ padding: '22px 18px 0' }}><div className="brand">Reelvy</div></header>
       )}
 
-      {shelves.map((s) => <Shelf key={s.key} title={s.title} items={s.items} />)}
-      {isPending && shelves.length === 0 && <p className="muted-line">Carregando catálogo…</p>}
+      <div className="nf-rows">
+        {shelves.map((s) => <Shelf key={s.key} title={s.title} items={s.items} />)}
+        {isPending && shelves.length === 0 && <p className="muted-line">Carregando catálogo…</p>}
+      </div>
     </div>
   );
 }
