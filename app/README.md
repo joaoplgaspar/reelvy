@@ -30,8 +30,8 @@ src/
 
 ## Estado
 
-- **Sem backend ainda.** Estado local (zustand + localStorage). Catálogo embutido (placeholder até o Firebase).
-- O **card** (carro-chefe) vive no Perfil e no fim do onboarding. Formatos: Identidade, Top N (Tier List pendente).
+- **Backend plugado (modo guardado):** sem `.env` roda 100% local (zustand + catálogo embutido); com Firebase configurado, usa Auth + Firestore + catálogo real (TMDB/AniList) com fallback local. Ver [`../docs/BACKEND-SKELETON.md`](../docs/BACKEND-SKELETON.md).
+- O **card** (carro-chefe) vive no Perfil e no fim do onboarding. Formatos: Identidade, Top N, Tier List.
 - Detalhe técnico: pôsteres do card são **base64** (TMDB não envia CORS → exportação PNG quebraria com URL remota).
 
 ## Próximo passo

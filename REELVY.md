@@ -60,7 +60,7 @@ O **risco real é distribuição** (o card viraliza?), não infraestrutura nem c
 **Formatos:**
 - ✅ **Identidade** — arquétipo de gosto derivado dos títulos escolhidos.
 - ✅ **Top N** — ranking numerado das suas escolhas.
-- ⏳ **Tier List (S/A/B/C/D)** — o formato que mais bomba no TikTok (pendente).
+- ✅ **Tier List (S/A/B/C/D)** — builder no próprio card (toca no pôster → muda de tier); o formato que mais bomba no TikTok.
 
 **Regras de copy dos arquétipos (IMPORTANTE):**
 - Rótulos **curtos e aspiracionais**, que a pessoa QUER reivindicar (ex: *"Alma Sensível"*, *"O Sonhador"*, *"Mente Inquieta"*).
@@ -177,7 +177,7 @@ npm run dev               # abre em http://localhost:5173
 1. **Backend real** — 🟢 *plugado no código*: Auth (signup adiado + gate), catálogo (Home/Busca/Detalhe via `useCatalog.ts`, com fallback local) e biblioteca (`useLibrarySync`, sync local ↔ Firestore). Falta só o **deploy/seed** (seu): criar o projeto Firebase, preencher `app/.env`, setar o secret `TMDB_TOKEN`, `firebase deploy` e rodar `prewarmDiscovery`. Passo a passo em [`docs/BACKEND-SKELETON.md`](docs/BACKEND-SKELETON.md).
 2. **Catálogo real** (TMDB + AniList) via o cache `media_meta`.
 3. **Detalhe com metadados ricos** — 🟢 sinopse + progresso por episódio + provedores reais (TMDB watch/providers); falta elenco/similares.
-4. **Card Tier List** (S/A/B/C/D) — fechar o trio de formatos virais.
+4. ~~**Card Tier List** (S/A/B/C/D)~~ ✅ **feito** — trio de formatos virais completo (Identidade · Top N · Tier).
 5. ~~Renomear a pasta `prototype/` → `app/`~~ ✅ **feito** (reestruturação jun/2026; legado CRA removido).
 6. **Deploy** (Vercel/Cloudflare) + travar **marca/handles** do nome.
 7. **Validar viralização** do card (a métrica-norte) — postar nos nichos de anime/cinema.

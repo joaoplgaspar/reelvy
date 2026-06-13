@@ -4,17 +4,36 @@ import { CatalogItem } from '../data/catalog';
 import { deriveArchetype, topGenres } from '../lib/archetypes';
 import ShareCard from './ShareCard';
 import TopCard from './TopCard';
+import TierCard, { TIERS, type Tier } from './TierCard';
 
-type Format = 'identity' | 'top';
+type Format = 'identity' | 'top' | 'tier';
+
+// Tier inicial: distribui os picks em ordem por S→A→B→C→D (começa preenchido — endowed progress).
+function seedTiers(picks: CatalogItem[]): Record<string, Tier> {
+  const out: Record<string, Tier> = {};
+  const n = picks.length;
+  picks.forEach((p, i) => {
+    out[p.id] = TIERS[n <= 1 ? 0 : Math.min(Math.floor((i / n) * 5), 4)];
+  });
+  return out;
+}
+
+function nextTier(t: Tier | undefined): Tier {
+  return TIERS[(TIERS.indexOf(t ?? 'A') + 1) % TIERS.length];
+}
 
 // Estúdio de card reutilizado no Onboarding (reveal) e no Perfil.
 export default function CardStudio({ picks }: { picks: CatalogItem[] }) {
   const archetype = deriveArchetype(picks);
   const genres = topGenres(picks);
   const heroes = picks.slice(0, 6);
+  const tierPicks = picks.slice(0, 25); // cap pra caber no card
   const cardRef = useRef<HTMLDivElement>(null);
   const [busy, setBusy] = useState(false);
   const [format, setFormat] = useState<Format>('identity');
+  const [tiers, setTiers] = useState<Record<string, Tier>>(() => seedTiers(tierPicks));
+
+  const cycle = (id: string) => setTiers((t) => ({ ...t, [id]: nextTier(t[id]) }));
 
   async function renderPng(): Promise<string | null> {
     if (!cardRef.current) return null;
@@ -45,13 +64,16 @@ export default function CardStudio({ picks }: { picks: CatalogItem[] }) {
       <div className="format-switch">
         <button className={format === 'identity' ? 'is-on' : ''} onClick={() => setFormat('identity')}>Identidade</button>
         <button className={format === 'top' ? 'is-on' : ''} onClick={() => setFormat('top')}>Top {Math.min(picks.length, 8)}</button>
+        <button className={format === 'tier' ? 'is-on' : ''} onClick={() => setFormat('tier')}>Tier</button>
       </div>
 
-      {format === 'identity' ? (
+      {format === 'identity' && (
         <ShareCard ref={cardRef} archetype={archetype} genres={genres} heroes={heroes} count={picks.length} />
-      ) : (
-        <TopCard ref={cardRef} picks={picks} accent={archetype.accent} />
       )}
+      {format === 'top' && <TopCard ref={cardRef} picks={picks} accent={archetype.accent} />}
+      {format === 'tier' && <TierCard ref={cardRef} picks={tierPicks} tiers={tiers} accent={archetype.accent} onCycle={cycle} />}
+
+      {format === 'tier' && <p className="hint">Toque num pôster pra trocar de tier.</p>}
 
       <div className="reveal-actions">
         <button className="btn btn-primary" onClick={share} disabled={busy}>{busy ? 'Gerando…' : 'Compartilhar'}</button>
