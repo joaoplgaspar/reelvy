@@ -1,7 +1,9 @@
 {
   "name": "reelvy-functions",
   "private": true,
-  "engines": { "node": "22" },
+  "engines": {
+    "node": "22"
+  },
   "main": "lib/index.js",
   "scripts": {
     "build": "tsc",
@@ -12,7 +14,7 @@
   },
   "dependencies": {
     "firebase-admin": "^12.7.0",
-    "firebase-functions": "^6.1.0"
+    "firebase-functions": "^7.2.5"
   },
   "devDependencies": {
     "@types/node": "^22.10.0",
