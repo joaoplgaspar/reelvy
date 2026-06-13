@@ -43,7 +43,7 @@ export default function Onboarding() {
             <div className="brand">Reelvy</div>
             <h1 className="title">Seu card</h1>
           </div>
-          <CardStudio picks={selected} />
+          <CardStudio picks={selected} formats={['identity']} />
           <button className="btn btn-primary onboarding-cta" onClick={finish}>Salvar meu perfil →</button>
           {mode === 'local' && (
             <p className="hint">Salvo <b>neste dispositivo</b>. O login real liga com o Firebase.</p>

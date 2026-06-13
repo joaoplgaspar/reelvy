@@ -23,14 +23,22 @@ function nextTier(t: Tier | undefined): Tier {
 }
 
 // Estúdio de card reutilizado no Onboarding (reveal) e no Perfil.
-export default function CardStudio({ picks }: { picks: CatalogItem[] }) {
+// `formats` controla os formatos exibidos: o onboarding usa só 'identity' (Top/Tier só
+// fazem sentido quando o usuário ordena/monta de propósito, no Perfil).
+export default function CardStudio({
+  picks,
+  formats = ['identity', 'top', 'tier'],
+}: {
+  picks: CatalogItem[];
+  formats?: Format[];
+}) {
   const archetype = deriveArchetype(picks);
   const genres = topGenres(picks);
   const heroes = picks.slice(0, 6);
   const tierPicks = picks.slice(0, 25); // cap pra caber no card
   const cardRef = useRef<HTMLDivElement>(null);
   const [busy, setBusy] = useState(false);
-  const [format, setFormat] = useState<Format>('identity');
+  const [format, setFormat] = useState<Format>(formats[0]);
   const [tiers, setTiers] = useState<Record<string, Tier>>(() => seedTiers(tierPicks));
 
   const cycle = (id: string) => setTiers((t) => ({ ...t, [id]: nextTier(t[id]) }));
@@ -61,11 +69,15 @@ export default function CardStudio({ picks }: { picks: CatalogItem[] }) {
 
   return (
     <div className="cardstudio">
-      <div className="format-switch">
-        <button className={format === 'identity' ? 'is-on' : ''} onClick={() => setFormat('identity')}>Identidade</button>
-        <button className={format === 'top' ? 'is-on' : ''} onClick={() => setFormat('top')}>Top {Math.min(picks.length, 8)}</button>
-        <button className={format === 'tier' ? 'is-on' : ''} onClick={() => setFormat('tier')}>Tier</button>
-      </div>
+      {formats.length > 1 && (
+        <div className="format-switch">
+          {formats.map((f) => (
+            <button key={f} className={format === f ? 'is-on' : ''} onClick={() => setFormat(f)}>
+              {f === 'identity' ? 'Identidade' : f === 'top' ? `Top ${Math.min(picks.length, 8)}` : 'Tier'}
+            </button>
+          ))}
+        </div>
+      )}
 
       {format === 'identity' && (
         <ShareCard ref={cardRef} archetype={archetype} genres={genres} heroes={heroes} count={picks.length} />
