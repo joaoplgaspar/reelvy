@@ -46,7 +46,7 @@ export default function TapGrid({ worlds, selected, setSelected, onNext, onBack 
           <div className="meter"><div className="meter-fill" style={{ width: `${meter}%` }} /></div>
           <p className="counter">
             {selected.length} selecionados
-            {enough ? ' · 🔥 mandou bem' : ` · escolha pelo menos ${MIN}`}
+            {enough ? ' · mandou bem' : ` · escolha pelo menos ${MIN}`}
           </p>
         </div>
       </div>
