@@ -1,6 +1,6 @@
 import { useParams, Link } from 'react-router-dom';
-import { byId } from '../data/queries';
 import { useStore, Status } from '../store/useStore';
+import { useMedia } from '../data/useCatalog';
 
 const STATUSES: { key: Status; label: string }[] = [
   { key: 'planned', label: 'Quero ver' },
@@ -11,11 +11,15 @@ const STATUSES: { key: Status; label: string }[] = [
 
 export default function Detail() {
   const { type, id } = useParams();
-  const item = byId(`${type}:${id}`);
-  const entry = useStore((s) => (item ? s.library[item.id] : undefined));
+  const mediaId = `${type}:${id}`;
+  const { data: item, isPending } = useMedia(mediaId);
+  const entry = useStore((s) => s.library[mediaId]);
   const setStatus = useStore((s) => s.setStatus);
   const setRating = useStore((s) => s.setRating);
 
+  if (isPending) {
+    return <div className="page"><p className="muted-line">Carregando…</p></div>;
+  }
   if (!item) {
     return <div className="page"><p className="empty">Título não encontrado.</p><Link className="btn btn-ghost" to="/">Voltar</Link></div>;
   }
@@ -37,7 +41,7 @@ export default function Detail() {
             <button
               key={s.key}
               className={`status-chip ${entry?.status === s.key ? 'is-on' : ''}`}
-              onClick={() => setStatus(item.id, s.key)}
+              onClick={() => setStatus(mediaId, s.key)}
             >
               {s.label}
             </button>
@@ -48,7 +52,7 @@ export default function Detail() {
           <span className="muted-line">Sua nota</span>
           <div className="stars">
             {[1, 2, 3, 4, 5].map((i) => (
-              <button key={i} className={`star ${stars >= i ? 'on' : ''}`} onClick={() => setRating(item.id, i * 2)}>★</button>
+              <button key={i} className={`star ${stars >= i ? 'on' : ''}`} onClick={() => setRating(mediaId, i * 2)}>★</button>
             ))}
           </div>
         </div>

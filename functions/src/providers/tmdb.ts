@@ -55,3 +55,14 @@ export async function fetchTmdbPopular(type: 'movie' | 'tv'): Promise<DiscoveryI
   const d = await tmdb<{ results?: Record<string, any>[] }>(`/${type}/popular?language=pt-BR&page=1`);
   return (d.results ?? []).slice(0, 20).map((r) => toDiscovery(type, r));
 }
+
+/** Busca multi (filme + série); descarta person/etc. Anime vem do AniList. */
+export async function searchTmdb(q: string): Promise<DiscoveryItem[]> {
+  const d = await tmdb<{ results?: Record<string, any>[] }>(
+    `/search/multi?language=pt-BR&page=1&query=${encodeURIComponent(q)}`,
+  );
+  return (d.results ?? [])
+    .filter((r) => (r.media_type === 'movie' || r.media_type === 'tv') && r.poster_path)
+    .slice(0, 14)
+    .map((r) => toDiscovery(r.media_type === 'tv' ? 'tv' : 'movie', r));
+}

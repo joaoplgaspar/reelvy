@@ -42,6 +42,17 @@ function mapMedia(m: Record<string, any>): MediaMetaCore {
   };
 }
 
+/** Item de descoberta/busca a partir de um nó de mídia do AniList. */
+function toDiscovery(m: Record<string, any>): DiscoveryItem {
+  return {
+    type: 'anime',
+    id: m.id,
+    title: m.title?.english ?? m.title?.romaji ?? '',
+    poster: m.coverImage?.large ?? '',
+    year: m.seasonYear ?? 0,
+  };
+}
+
 export async function fetchAniList(id: number): Promise<MediaMetaCore> {
   const data = await anilist<{ Media: Record<string, any> }>(
     `query ($id: Int) { Media(id: $id, type: ANIME) { ${MEDIA_FIELDS} } }`,
@@ -61,11 +72,19 @@ export async function fetchAniListSeasonal(): Promise<DiscoveryItem[]> {
      }`,
     {},
   );
-  return (data.Page?.media ?? []).map((m) => ({
-    type: 'anime' as const,
-    id: m.id,
-    title: m.title?.english ?? m.title?.romaji ?? '',
-    poster: m.coverImage?.large ?? '',
-    year: m.seasonYear ?? 0,
-  }));
+  return (data.Page?.media ?? []).map(toDiscovery);
+}
+
+export async function searchAniList(q: string): Promise<DiscoveryItem[]> {
+  const data = await anilist<{ Page: { media: Record<string, any>[] } }>(
+    `query ($q: String) {
+       Page(perPage: 12) {
+         media(type: ANIME, search: $q, sort: SEARCH_MATCH) {
+           id title { romaji english } seasonYear coverImage { large }
+         }
+       }
+     }`,
+    { q },
+  );
+  return (data.Page?.media ?? []).map(toDiscovery);
 }

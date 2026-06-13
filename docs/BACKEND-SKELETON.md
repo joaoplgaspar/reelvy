@@ -14,20 +14,24 @@ reelvy/
 ├── functions/             Cloud Functions gen2 (TypeScript)
 │   └── src/
 │       ├── index.ts           init do Admin SDK + exports
-│       ├── resolveMedia.ts     callable — read-through cache
+│       ├── resolveMedia.ts     callable — read-through cache (detalhe por id)
+│       ├── searchMedia.ts      callable — busca unificada (TMDB multi + AniList)
 │       ├── prewarmDiscovery.ts scheduled (24h) — pré-aquece prateleiras
-│       ├── providers/tmdb.ts    fetch + mapeamento TMDB (filme/série)
-│       ├── providers/anilist.ts fetch + mapeamento AniList (anime)
+│       ├── providers/tmdb.ts    fetch/busca/mapeamento TMDB (filme/série)
+│       ├── providers/anilist.ts fetch/busca/mapeamento AniList (anime)
 │       └── types.ts            MediaMeta / DiscoveryItem
 └── app/src/
+    ├── app/AuthContext.tsx ligação do Auth (modo firebase vs local)
     ├── lib/firebase.ts     init guardado (só liga se as VITE_FIREBASE_* existirem)
     ├── lib/auth.ts         Google + email/senha; cria users/{uid} no 1º login
     ├── lib/queryClient.ts  TanStack Query (cache no cliente)
     ├── data/media.ts       tipos + adaptadores media_meta → CatalogItem
-    └── data/remote.ts      camada REMOTA (Firestore + Functions), espelha queries.ts
+    ├── data/remote.ts      camada REMOTA (Firestore + Functions), espelha queries.ts
+    └── data/useCatalog.ts  hooks (useShelves/useSearch/useMedia) c/ fallback local
 ```
 
-> ⚠️ **O esqueleto está inerte.** O app continua rodando no **catálogo local** (`data/queries.ts` + `data/catalog.ts`). Nada em `data/remote.ts`/`lib/auth.ts` está plugado nas páginas ainda — é o alvo do swap abaixo. Por isso o build passa sem um projeto Firebase.
+> ✅ **Já plugado:** Auth (login + gate) e a **leitura de catálogo** (Home/Busca/Detalhe via `useCatalog.ts`). Os hooks tentam o remoto e **caem no catálogo local** em erro/vazio — então o app funciona sem projeto Firebase (modo local) e **acende com dado real** assim que você deploya + semeia.
+> ⏳ **Falta plugar:** a **biblioteca** pessoal (`useStore`/localStorage → subcoleção `library`) — é o último swap.
 
 ## Ligar o backend (passo a passo)
 
@@ -39,24 +43,21 @@ reelvy/
    firebase deploy --only firestore:rules
    cd functions && npm install && npm run build && firebase deploy --only functions
    ```
-5. **Semear a descoberta:** rodar `prewarmDiscovery` uma vez (no Console ou via emulador) pra popular `discovery_lists`.
+5. **Semear a descoberta:** disparar `prewarmDiscovery` uma vez pra popular `discovery_lists` (Console → Cloud Scheduler → job do `prewarmDiscovery` → **Run now**; ou `gcloud scheduler jobs run firebase-schedule-prewarmDiscovery-<região>`). Sem o seed, a Home cai no catálogo local.
 
-## Swap local → remoto (onde plugar nas telas)
+## Swap local → remoto (status)
 
-A costura é **assinatura igual** entre `queries.ts` (local, síncrono) e `remote.ts` (remoto, async). Trocar por página, via TanStack Query:
+A costura é **assinatura igual** entre `queries.ts` (local) e `remote.ts` (remoto), unificada nos hooks de `useCatalog.ts`.
 
-| Tela | Hoje (local) | Vira (remoto) |
+| Tela / dado | Status | Como |
 |---|---|---|
-| Home | `shelves()` | `useQuery(['shelves'], remoteShelves)` |
-| Detalhe | `byId(id)` | `useQuery(['media', id], () => remoteById(id))` |
-| Biblioteca/Detalhe | `useStore` (localStorage) | `getLibrary(uid)` / `setLibraryEntry` / `removeLibraryEntry` |
-| Onboarding/Signup | `completeOnboarding` local | idem + persistir no Firestore após o login (signup adiado) |
+| Auth + gate | ✅ feito | `AuthContext` + `/entrar` + gate no `AppShell` |
+| Home (prateleiras) | ✅ feito | `useShelves()` → `remoteShelves()` (fallback local) |
+| Busca | ✅ feito | `useSearch()` → Function `searchMedia` (fallback local) |
+| Detalhe | ✅ feito | `useMedia()` → `remoteById()`/`resolveMedia` (fallback local) |
+| Biblioteca pessoal | ⏳ falta | `useStore`/localStorage → subcoleção `library` (`getLibrary`/`setLibraryEntry`/`removeLibraryEntry` já existem em `remote.ts`) |
 
-Ordem sugerida (a mesma do roadmap em `REELVY.md` §9):
-1. Auth real (tela de signup/login adiado) + gate no `AppShell`.
-2. Migrar a biblioteca do `zustand`/localStorage → subcoleção `library` (manter o local como cache otimista).
-3. Trocar `shelves()`/`byId()` pelos hooks remotos (Home e Detalhe).
-4. Detalhe com metadados ricos (sinopse/episódios/elenco) vindos do `resolveMedia`.
+> Os hooks só chamam o remoto quando `isFirebaseConfigured` é true; em erro/vazio caem no local. Ou seja: **sem deploy, tudo roda local; com deploy + seed, vira dado real** sem tocar nas telas.
 
 ## Decisões fixadas (não reabrir)
 

@@ -7,9 +7,8 @@ import type { Shelf } from './queries';
 
 /**
  * Camada de dados REMOTA (Firestore + Functions). Mesmas formas da camada local
- * (`queries.ts`) — é o alvo do swap quando o backend estiver de pé.
- * AINDA NÃO está plugada nas páginas: o app roda no catálogo local até a troca.
- * Plano de troca: docs/BACKEND-SKELETON.md.
+ * (`queries.ts`). Plugada nas páginas via os hooks de `useCatalog.ts`, que caem
+ * no catálogo local em erro/vazio — o app funciona antes do deploy/seed.
  */
 
 const DISCOVERY_KEYS = ['seasonal_anime', 'trending_movies', 'popular_tv'] as const;
@@ -42,6 +41,13 @@ export async function remoteById(mediaId: string): Promise<CatalogItem | undefin
   const resolve = httpsCallable<{ type: string; id: number }, MediaMeta>(getFns(), 'resolveMedia');
   const res = await resolve({ type, id: Number(idStr) });
   return toCatalogItem(res.data);
+}
+
+/** Busca: Function searchMedia (TMDB + AniList) → CatalogItem[]. */
+export async function remoteSearch(q: string): Promise<CatalogItem[]> {
+  const fn = httpsCallable<{ q: string }, DiscoveryItem[]>(getFns(), 'searchMedia');
+  const res = await fn({ q });
+  return (res.data ?? []).map(discoveryToCatalogItem);
 }
 
 // ---- biblioteca pessoal: users/{uid}/library/{type:id} ----

@@ -1,6 +1,7 @@
-import { shelves, byId } from '../data/queries';
+import { byId } from '../data/queries';
 import { CatalogItem } from '../data/catalog';
 import { useStore } from '../store/useStore';
+import { useShelves } from '../data/useCatalog';
 import Poster from '../components/Poster';
 
 function Shelf({ title, items }: { title: string; items: CatalogItem[] }) {
@@ -16,6 +17,7 @@ function Shelf({ title, items }: { title: string; items: CatalogItem[] }) {
 
 export default function Home() {
   const library = useStore((s) => s.library);
+  const { data: shelves = [], isPending } = useShelves();
   const watching = Object.entries(library)
     .filter(([, e]) => e.status === 'watching')
     .map(([id]) => byId(id))
@@ -27,7 +29,8 @@ export default function Home() {
         <div className="brand">Reelvy</div>
       </header>
       {watching.length > 0 && <Shelf title="Continuar assistindo" items={watching} />}
-      {shelves().map((s) => <Shelf key={s.key} title={s.title} items={s.items} />)}
+      {shelves.map((s) => <Shelf key={s.key} title={s.title} items={s.items} />)}
+      {isPending && shelves.length === 0 && <p className="muted-line">Carregando catálogo…</p>}
     </div>
   );
 }

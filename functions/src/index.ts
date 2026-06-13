@@ -5,3 +5,4 @@ initializeApp();
 
 export { resolveMedia } from './resolveMedia';
 export { prewarmDiscovery } from './prewarmDiscovery';
+export { searchMedia } from './searchMedia';
