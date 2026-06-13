@@ -183,6 +183,17 @@ npm run dev               # abre em http://localhost:5173
 7. **Validar viralização** do card (a métrica-norte) — postar nos nichos de anime/cinema.
 8. **Fase 1+** (compatibilidade → spoiler-safe → decisão em grupo).
 
+### 9.1 Backlog de UX / produto (levantado jun/2026)
+
+A maioria já tem spec em `docs/TELAS-FASE-0.md` — falta **construir**:
+
+- **Landing** (`TELAS §5🅰`) — porta de entrada antes do onboarding (hoje o app pula direto pro `/onboarding`).
+- **Entry de usuário recorrente** — logar direto pra quem já tem conta (além do signup adiado).
+- **Catálogo/busca reais** — busca e Home hoje usam os 42 títulos embutidos; ligar via `resolveMedia`/`prewarmDiscovery` (= itens #1–2 acima).
+- **Pass de polish visual** contra a direção visual (`TELAS §8`): Home (Up Next com progresso, "pra seu gosto"), telas em geral, e **trocar os ícones emoji da nav por um set real**.
+- **＋ Quick-log de verdade** (`TELAS §5🅵`, log <5s) — hoje o ＋ só navega pra busca.
+- 🆕 **Desktop / responsivo (escopo NOVO)** — os docs eram mobile-only. Manter **mobile-first** (thumb-zone; o card é compartilhado pra celular), mas adicionar layout adaptativo pra desktop (hoje o app é uma coluna travada em `460px`). **Única observação que não estava no plano.**
+
 ---
 
 ## 10. Decisões registradas (resumo cronológico)
