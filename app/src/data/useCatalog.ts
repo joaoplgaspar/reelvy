@@ -44,10 +44,10 @@ export function useSearch(q: string) {
 
 /** Detalhe (read-through Firestore + resolveMedia) com fallback local. */
 export function useMedia(mediaId: string) {
-  return useQuery<MediaDetail | undefined>({
+  return useQuery<MediaDetail | null>({
     queryKey: ['media', mediaId, REMOTE],
     queryFn: async () => {
-      const local = localById(mediaId);
+      const local = localById(mediaId) ?? null; // null (não undefined) p/ o TanStack não estourar
       if (!REMOTE) return local;
       try {
         return (await remoteById(mediaId)) ?? local;

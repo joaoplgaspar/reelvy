@@ -6,6 +6,7 @@ import { useShelves } from '../data/useCatalog';
 import { useAuth } from '../app/AuthContext';
 import Poster from '../components/Poster';
 import Icon from '../components/Icon';
+import Skeleton from '../components/Skeleton';
 
 const TYPE_LABEL: Record<CatalogItem['type'], string> = { movie: 'Filme', tv: 'Série', anime: 'Anime' };
 
@@ -28,6 +29,24 @@ export default function Home() {
 
   const featured = shelves[0]?.items[0];
   const inList = featured ? library[featured.id]?.status === 'planned' : false;
+
+  if (isPending && shelves.length === 0) {
+    return (
+      <div className="home-nf">
+        <Skeleton style={{ width: '100%', height: '72vh', minHeight: 440, borderRadius: 0 }} />
+        <div className="nf-rows">
+          {[0, 1].map((r) => (
+            <section className="shelf" key={r}>
+              <Skeleton style={{ height: 18, width: 150, marginBottom: 12 }} />
+              <div className="shelf-row">
+                {[0, 1, 2, 3].map((i) => <Skeleton key={i} style={{ width: 112, height: 168, flex: 'none', borderRadius: 11 }} />)}
+              </div>
+            </section>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="home-nf">
@@ -66,7 +85,6 @@ export default function Home() {
 
       <div className="nf-rows">
         {shelves.map((s) => <Shelf key={s.key} title={s.title} items={s.items} />)}
-        {isPending && shelves.length === 0 && <p className="muted-line">Carregando catálogo…</p>}
       </div>
     </div>
   );

@@ -388,3 +388,7 @@ body {
 .nf-btn-ghost { background: color-mix(in srgb, var(--surface3) 85%, transparent); color: var(--text); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border: 1px solid var(--line); }
 .nf-rows { margin-top: 20px; padding-left: 18px; }
 .nf-rows .shelf-row { padding-right: 18px; }
+
+/* ---------- Skeletons (loading) ---------- */
+.skeleton { background: linear-gradient(100deg, var(--surface) 28%, var(--surface2) 50%, var(--surface) 72%); background-size: 200% 100%; animation: shimmer 1.4s linear infinite; border-radius: 10px; }
+@keyframes shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }

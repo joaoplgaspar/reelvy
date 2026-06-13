@@ -1,6 +1,7 @@
 import { useParams, Link } from 'react-router-dom';
 import { useStore, Status } from '../store/useStore';
 import { useMedia } from '../data/useCatalog';
+import Skeleton from '../components/Skeleton';
 
 const STATUSES: { key: Status; label: string }[] = [
   { key: 'planned', label: 'Quero ver' },
@@ -19,7 +20,19 @@ export default function Detail() {
   const setProgress = useStore((s) => s.setProgress);
 
   if (isPending) {
-    return <div className="page"><p className="muted-line">Carregando…</p></div>;
+    return (
+      <div className="page detail">
+        <Skeleton style={{ width: '100%', height: '50vh', borderRadius: 0 }} />
+        <div className="detail-body">
+          <Skeleton style={{ height: 30, width: '65%' }} />
+          <Skeleton style={{ height: 14, width: '45%', marginTop: 12 }} />
+          <div style={{ display: 'flex', gap: 8, marginTop: 18 }}>
+            {[0, 1, 2].map((i) => <Skeleton key={i} style={{ height: 38, width: 92, borderRadius: 99 }} />)}
+          </div>
+          <Skeleton style={{ height: 72, width: '100%', marginTop: 22 }} />
+        </div>
+      </div>
+    );
   }
   if (!item) {
     return <div className="page"><p className="empty">Título não encontrado.</p><Link className="btn btn-ghost" to="/">Voltar</Link></div>;
