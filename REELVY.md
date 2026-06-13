@@ -174,7 +174,7 @@ npm run dev               # abre em http://localhost:5173
 
 ## 9. Roadmap (próximos passos, em ordem)
 
-1. **Backend real** — Firebase **Auth** (tela de signup/login) + **Firestore** + Functions `resolveMedia`/`prewarmDiscovery`. Trocar o `zustand` local pelo Firestore e o catálogo embutido pelo cache real.
+1. **Backend real** — 🟡 *esqueleto scaffoldado* (Functions `resolveMedia`/`prewarmDiscovery`, regras, `firebase.json`, ponte cliente em `app/src/lib/` + `data/remote.ts` + TanStack Query). Falta **ligar**: criar o projeto Firebase, preencher `app/.env`, setar o secret `TMDB_TOKEN`, deployar e fazer o swap `queries → remote` por tela. Passo a passo em [`docs/BACKEND-SKELETON.md`](docs/BACKEND-SKELETON.md).
 2. **Catálogo real** (TMDB + AniList) via o cache `media_meta`.
 3. **Detalhe com metadados ricos** (sinopse, episódios, elenco, provedores reais).
 4. **Card Tier List** (S/A/B/C/D) — fechar o trio de formatos virais.
@@ -203,6 +203,8 @@ npm run dev               # abre em http://localhost:5173
 ## Ponteiros (outros documentos)
 
 - [`docs/ARQUITETURA-FASE-0.md`](docs/ARQUITETURA-FASE-0.md) — schema Firestore, cache, Cloud Functions, regras de segurança.
+- [`docs/BACKEND-SKELETON.md`](docs/BACKEND-SKELETON.md) — o que já está scaffoldado e como ligar o backend (swap local → remoto).
+- [`functions/README.md`](functions/README.md) — como configurar secret, emular e deployar as Functions.
 - [`docs/CUSTOS-FASE-0.md`](docs/CUSTOS-FASE-0.md) — custos de infra por faixa de usuários.
 - [`docs/TELAS-FASE-0.md`](docs/TELAS-FASE-0.md) — espec de telas com CRO/UX e referências.
 - [`app/README.md`](app/README.md) — como rodar o app.

@@ -1,0 +1,28 @@
+rules_version = '2';
+
+// Regras da Fase 0 — ver docs/ARQUITETURA-FASE-0.md §8.
+// As Functions usam o Admin SDK e IGNORAM estas regras, por isso o catálogo é `write: false`.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Catálogo cacheado: leitura p/ autenticados; escrita só via Functions.
+    match /media_meta/{id} {
+      allow read: if request.auth != null;
+      allow write: if false;
+    }
+    match /discovery_lists/{id} {
+      allow read: if request.auth != null;
+      allow write: if false;
+    }
+
+    // Dados pessoais: só o dono.
+    match /users/{uid} {
+      allow read, write: if request.auth != null && request.auth.uid == uid;
+
+      // Biblioteca em subcoleção (1 doc por título) — NUNCA array no doc do user.
+      match /library/{mediaId} {
+        allow read, write: if request.auth != null && request.auth.uid == uid;
+      }
+    }
+  }
+}
