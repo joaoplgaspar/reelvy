@@ -8,10 +8,6 @@ import { signOutUser } from '../lib/auth';
 import CardStudio from '../components/CardStudio';
 import Poster from '../components/Poster';
 
-function Stat({ n, l }: { n: number; l: string }) {
-  return <div className="stat"><b>{n}</b><span>{l}</span></div>;
-}
-
 export default function Profile() {
   const library = useStore((s) => s.library);
   const picks = useStore((s) => s.picks);
@@ -31,28 +27,23 @@ export default function Profile() {
   const favorites = lovedItems.slice(0, 6);
 
   return (
-    <div className="page" style={{ ['--accent' as string]: arche.accent } as React.CSSProperties}>
-      <header className="profile-head">
+    <div className="page profile" style={{ ['--accent' as string]: arche.accent } as React.CSSProperties}>
+      <header className="profile-header">
         {user?.photoURL
           ? <img className="profile-avatar" src={user.photoURL} alt="" referrerPolicy="no-referrer" />
           : <div className="profile-avatar profile-avatar--ph">{name.charAt(0).toUpperCase()}</div>}
-        <div className="profile-head-text">
+        <div className="profile-header-info">
           <h1 className="profile-name">{name}</h1>
-          <div className="profile-arche-sm">{arche.name}</div>
+          <div className="profile-handle">{arche.name}</div>
+          <div className="profile-stats-inline">
+            <span><b>{total}</b> títulos</span>
+            <span><b>{counts['done'] || 0}</b> vistos</span>
+            <span><b>{counts['watching'] || 0}</b> assistindo</span>
+          </div>
         </div>
       </header>
 
-      <div className="profile-id">
-        <div className="profile-arche">{arche.name}</div>
-        <div className="profile-tag">{arche.tagline}</div>
-      </div>
-
-      <div className="stats">
-        <Stat n={total} l="títulos" />
-        <Stat n={counts['done'] || 0} l="vistos" />
-        <Stat n={counts['watching'] || 0} l="assistindo" />
-        <Stat n={counts['planned'] || 0} l="quero ver" />
-      </div>
+      <p className="profile-bio">{arche.tagline}</p>
 
       {favorites.length > 0 && (
         <section className="profile-favs">
@@ -62,7 +53,7 @@ export default function Profile() {
       )}
 
       <button className="btn btn-primary" onClick={() => setShowCard((v) => !v)}>
-        {showCard ? 'Fechar card' : 'Gerar card'}
+        {showCard ? 'Fechar card' : 'Gerar meu card'}
       </button>
 
       {showCard && lovedItems.length > 0 && (
