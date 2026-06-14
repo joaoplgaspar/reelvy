@@ -83,6 +83,16 @@ export default function Home() {
         <header className="page-head" style={{ padding: '22px 18px 0' }}><div className="brand">Reelvy</div></header>
       )}
 
+      <div className="home-match-wrap">
+        <Link to="/match" className="match-hero">
+          <div className="match-hero-text">
+            <b>O que vamos ver hoje?</b>
+            <span>Deslize com quem você ama até dar match</span>
+          </div>
+          <Icon name="users" size={22} />
+        </Link>
+      </div>
+
       <div className="nf-rows">
         {shelves.map((s) => <Shelf key={s.key} title={s.title} items={s.items} />)}
       </div>

@@ -1,8 +1,10 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useStore, Status } from '../store/useStore';
 import { byId } from '../data/queries';
 import { CatalogItem } from '../data/catalog';
 import Poster from '../components/Poster';
+import Icon from '../components/Icon';
 
 const TABS: { key: Status | 'all'; label: string }[] = [
   { key: 'all', label: 'Tudo' },
@@ -23,7 +25,10 @@ export default function Library() {
 
   return (
     <div className="page">
-      <header className="page-head"><h1 className="page-title">Biblioteca</h1></header>
+      <header className="page-head lib-head">
+        <h1 className="page-title">Biblioteca</h1>
+        <Link to="/listas" className="lib-lists-link"><Icon name="library" size={15} /> Listas</Link>
+      </header>
       <div className="tabs">
         {TABS.map((t) => (
           <button key={t.key} className={`tab ${tab === t.key ? 'is-on' : ''}`} onClick={() => setTab(t.key)}>{t.label}</button>
