@@ -7,6 +7,7 @@ import { useAuth } from '../app/AuthContext';
 import Poster from '../components/Poster';
 import Icon from '../components/Icon';
 import Skeleton from '../components/Skeleton';
+import BannerCarousel from '../components/BannerCarousel';
 
 const TYPE_LABEL: Record<CatalogItem['type'], string> = { movie: 'Filme', tv: 'Série', anime: 'Anime' };
 
@@ -83,15 +84,7 @@ export default function Home() {
         <header className="page-head" style={{ padding: '22px 18px 0' }}><div className="brand">Reelvy</div></header>
       )}
 
-      <div className="home-match-wrap">
-        <Link to="/match" className="match-hero">
-          <div className="match-hero-text">
-            <b>O que vamos ver hoje?</b>
-            <span>Deslize com quem você ama até dar match</span>
-          </div>
-          <Icon name="users" size={22} />
-        </Link>
-      </div>
+      <BannerCarousel />
 
       <div className="nf-rows">
         {shelves.map((s) => <Shelf key={s.key} title={s.title} items={s.items} />)}

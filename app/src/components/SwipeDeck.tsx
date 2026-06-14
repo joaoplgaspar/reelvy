@@ -5,11 +5,12 @@ import Icon from './Icon';
 type Props = {
   items: CatalogItem[];
   onComplete: (likedIds: string[]) => void;
+  onSwipe?: (mediaId: string, dir: 'up' | 'down') => void;   // por-swipe (sessão em tempo real)
 };
 
 const THRESHOLD = 110;
 
-export default function SwipeDeck({ items, onComplete }: Props) {
+export default function SwipeDeck({ items, onComplete, onSwipe }: Props) {
   const [i, setI] = useState(0);
   const liked = useRef<string[]>([]);
   const [drag, setDrag] = useState({ x: 0, y: 0 });
@@ -21,6 +22,7 @@ export default function SwipeDeck({ items, onComplete }: Props) {
 
   function decide(dir: 'like' | 'pass') {
     if (leaving) return;
+    if (current) onSwipe?.(current.id, dir === 'like' ? 'up' : 'down');
     if (dir === 'like' && current) liked.current.push(current.id);
     setLeaving(dir);
     window.setTimeout(() => {
