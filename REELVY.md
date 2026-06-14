@@ -11,10 +11,10 @@
 - **O que é:** Reelvy — app social de quem assiste de **tudo** (anime + série + filme), anime-first. Não é "mais um Letterboxd": o diferencial é o **"junto"** (compatibilidade de gosto, social à prova de spoiler, decisão em grupo).
 - **Nome:** **Reelvy** · domínio alvo `reelvy.tv` (livre) · tagline **"watch together"**. (Antes era "We Watch" — descartado por colisão.)
 - **Carro-chefe:** o **card compartilhável** (motor de aquisição viral). Já construído (Identidade + Top N).
-- **Onde está o código real:** pasta **`prototype/`** (vai ser renomeada pra `app/`). É um app React + Vite navegável, com onboarding, home, busca, detalhe, biblioteca, perfil.
-- **Como rodar:** `cd prototype && npm install && npm run dev` (Node 22).
+- **Onde está o código real:** pasta **`app/`**. É um app React + Vite navegável, com onboarding, home, busca, detalhe, biblioteca, perfil.
+- **Como rodar:** `cd app && npm install && npm run dev` (Node 22).
 - **Estado:** front funcional com **estado local** (sem backend ainda). Próximo grande passo: **Firebase** (contas + dados reais).
-- **Pasta raiz tem código LEGADO** (Create React App antigo) que será descartado — ignore `src/`, `public/` da raiz.
+- **Legado removido:** o Create React App antigo (`src/`, `public/`, etc. na raiz) foi descartado na reestruturação de jun/2026 — o app agora vive em `app/`.
 
 ---
 
@@ -60,7 +60,7 @@ O **risco real é distribuição** (o card viraliza?), não infraestrutura nem c
 **Formatos:**
 - ✅ **Identidade** — arquétipo de gosto derivado dos títulos escolhidos.
 - ✅ **Top N** — ranking numerado das suas escolhas.
-- ⏳ **Tier List (S/A/B/C/D)** — o formato que mais bomba no TikTok (pendente).
+- ✅ **Tier List (S/A/B/C/D)** — builder no próprio card (toca no pôster → muda de tier); o formato que mais bomba no TikTok.
 
 **Regras de copy dos arquétipos (IMPORTANTE):**
 - Rótulos **curtos e aspiracionais**, que a pessoa QUER reivindicar (ex: *"Alma Sensível"*, *"O Sonhador"*, *"Mente Inquieta"*).
@@ -90,19 +90,19 @@ Detalhe completo em [`docs/TELAS-FASE-0.md`](docs/TELAS-FASE-0.md).
 
 ### Layout do repositório
 ```
-we_watch/
-├── REELVY.md            ← este documento
+reelvy/  (repo: github.com/joaoplgaspar/reelvy)
+├── REELVY.md            ← este documento (decisões & roadmap)
+├── README.md            ← visão geral + como rodar
 ├── docs/                ← planejamento (arquitetura, custos, telas)
-├── prototype/           ← O APP REAL Reelvy (React+Vite+TS)   ⭐
-├── src/ public/ ...     ← CÓDIGO LEGADO (Create React App antigo) — descartar
+└── app/                 ← O APP Reelvy (React+Vite+TS)   ⭐
 ```
-> A pasta `prototype/` é o app de verdade (renomear pra `app/` ou `reelvy/` quando quiser). O `src/` da raiz é o protótipo CRA original abandonado.
+> O legado (Create React App antigo na raiz: `src/`, `public/`, `package.json`…) foi **removido** na reestruturação de jun/2026. Quando o backend entrar, `functions/` + `firebase.json` + `firestore.rules` entram como irmãos de `app/`.
 
-### Stack (do app em `prototype/`)
+### Stack (do app em `app/`)
 - **React 18 + Vite + TypeScript**, mobile-first (PWA depois)
 - **react-router-dom** (rotas) · **zustand** (estado + persistência em localStorage)
 - **html-to-image** (exportar card como PNG)
-- **Catálogo:** 42 títulos reais (TMDB + AniList) **embutidos** em `src/data/catalog.ts` (com pôster base64 pro card). Placeholder até o backend.
+- **Catálogo:** 42 títulos reais (TMDB + AniList) **embutidos** em `app/src/data/catalog.ts` (com pôster base64 pro card). Placeholder até o backend.
 - **Backend:** ainda **não** existe. Planejado: **Firebase** (Auth + Firestore + Functions). Hosting: Vercel/Cloudflare.
 
 ### O que está construído e funcionando (verificado)
@@ -121,7 +121,7 @@ Nav inferior: **Home · Buscar · ＋ · Biblioteca · Perfil**. `AppShell` redi
 - Estado do usuário (biblioteca, gosto) → hoje `zustand`+localStorage; vira **Firestore**.
 - Catálogo → hoje 42 títulos embutidos; vira **TMDB/AniList via cache `media_meta`**.
 - Sem login real, sem sincronização entre dispositivos, sem metadados ricos no Detalhe (sinopse/episódios/elenco).
-- Costura limpa pra trocar: `prototype/src/data/queries.ts` (mesmas assinaturas `shelves/byId/search`).
+- Costura limpa pra trocar: `app/src/data/queries.ts` (mesmas assinaturas `shelves/byId/search`).
 
 ---
 
@@ -143,17 +143,11 @@ Detalhe completo (schema, functions, regras de segurança) em [`docs/ARQUITETURA
 - Git.
 
 ### Migração via Git (recomendado)
-Os arquivos novos (`docs/`, `prototype/`) ainda **não estão commitados**. Para migrar:
+Tudo já está versionado (app, docs, handoff). Para rodar em outra máquina:
 
 ```bash
-# Na máquina atual:
-git add docs prototype REELVY.md prototype/.gitignore
-git commit -m "Reelvy: app structure, docs e handoff"
-git push origin main      # remote: github.com/joaoplgaspar/we_watch
-
-# Na máquina nova:
-git clone https://github.com/joaoplgaspar/we_watch.git
-cd we_watch/prototype
+git clone https://github.com/joaoplgaspar/reelvy.git
+cd reelvy/app
 npm install
 npm run dev               # abre em http://localhost:5173
 ```
@@ -180,14 +174,25 @@ npm run dev               # abre em http://localhost:5173
 
 ## 9. Roadmap (próximos passos, em ordem)
 
-1. **Backend real** — Firebase **Auth** (tela de signup/login) + **Firestore** + Functions `resolveMedia`/`prewarmDiscovery`. Trocar o `zustand` local pelo Firestore e o catálogo embutido pelo cache real.
+1. **Backend real** — 🟢 *plugado no código*: Auth (signup adiado + gate), catálogo (Home/Busca/Detalhe via `useCatalog.ts`, com fallback local) e biblioteca (`useLibrarySync`, sync local ↔ Firestore). Falta só o **deploy/seed** (seu): criar o projeto Firebase, preencher `app/.env`, setar o secret `TMDB_TOKEN`, `firebase deploy` e rodar `prewarmDiscovery`. Passo a passo em [`docs/BACKEND-SKELETON.md`](docs/BACKEND-SKELETON.md).
 2. **Catálogo real** (TMDB + AniList) via o cache `media_meta`.
-3. **Detalhe com metadados ricos** (sinopse, episódios, elenco, provedores reais).
-4. **Card Tier List** (S/A/B/C/D) — fechar o trio de formatos virais.
-5. **Renomear** a pasta `prototype/` → `app/`.
+3. **Detalhe com metadados ricos** — 🟢 sinopse + progresso por episódio + provedores reais (TMDB watch/providers); falta elenco/similares.
+4. ~~**Card Tier List** (S/A/B/C/D)~~ ✅ **feito** — trio de formatos virais completo (Identidade · Top N · Tier).
+5. ~~Renomear a pasta `prototype/` → `app/`~~ ✅ **feito** (reestruturação jun/2026; legado CRA removido).
 6. **Deploy** (Vercel/Cloudflare) + travar **marca/handles** do nome.
 7. **Validar viralização** do card (a métrica-norte) — postar nos nichos de anime/cinema.
-8. **Fase 1+** (compatibilidade → spoiler-safe → decisão em grupo).
+8. **Fase 1+** (compatibilidade → spoiler-safe → decisão em grupo tipo Tinder) — speccado em [`docs/MECANICAS-FASES.md`](docs/MECANICAS-FASES.md).
+
+### 9.1 Backlog de UX / produto (levantado jun/2026)
+
+A maioria já tem spec em `docs/TELAS-FASE-0.md` — falta **construir**:
+
+- **Landing** (`TELAS §5🅰`) — porta de entrada antes do onboarding (hoje o app pula direto pro `/onboarding`).
+- **Entry de usuário recorrente** — logar direto pra quem já tem conta (além do signup adiado).
+- **Catálogo/busca reais** — busca e Home hoje usam os 42 títulos embutidos; ligar via `resolveMedia`/`prewarmDiscovery` (= itens #1–2 acima).
+- **Pass de polish visual** contra a direção visual (`TELAS §8`): Home (Up Next com progresso, "pra seu gosto"), telas em geral, e **trocar os ícones emoji da nav por um set real**.
+- **＋ Quick-log de verdade** (`TELAS §5🅵`, log <5s) — hoje o ＋ só navega pra busca.
+- 🆕 **Desktop / responsivo (escopo NOVO)** — os docs eram mobile-only. Manter **mobile-first** (thumb-zone; o card é compartilhado pra celular), mas adicionar layout adaptativo pra desktop (hoje o app é uma coluna travada em `460px`). **Única observação que não estava no plano.**
 
 ---
 
@@ -209,6 +214,11 @@ npm run dev               # abre em http://localhost:5173
 ## Ponteiros (outros documentos)
 
 - [`docs/ARQUITETURA-FASE-0.md`](docs/ARQUITETURA-FASE-0.md) — schema Firestore, cache, Cloud Functions, regras de segurança.
+- [`docs/BACKEND-SKELETON.md`](docs/BACKEND-SKELETON.md) — o que já está scaffoldado e como ligar o backend (swap local → remoto).
+- [`functions/README.md`](functions/README.md) — como configurar secret, emular e deployar as Functions.
 - [`docs/CUSTOS-FASE-0.md`](docs/CUSTOS-FASE-0.md) — custos de infra por faixa de usuários.
 - [`docs/TELAS-FASE-0.md`](docs/TELAS-FASE-0.md) — espec de telas com CRO/UX e referências.
-- [`prototype/README.md`](prototype/README.md) — como rodar o app.
+- [`docs/MECANICAS-FASES.md`](docs/MECANICAS-FASES.md) — as mecânicas que diferenciam (Fases 1-3: compatibilidade, spoiler-safe, decisão em grupo tipo Tinder).
+- [`docs/DESIGN-SYSTEM.md`](docs/DESIGN-SYSTEM.md) — tokens, componentes reutilizáveis e classes/padrões de UI.
+- [`CLAUDE.md`](CLAUDE.md) — índice de contexto do projeto (carrega automático nas sessões do Claude Code).
+- [`app/README.md`](app/README.md) — como rodar o app.

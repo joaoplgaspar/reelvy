@@ -1,4 +1,4 @@
-# We Watch — Material de Custos (Fase 0)
+# Reelvy — Material de Custos (Fase 0)
 
 > Estimativa de infraestrutura para a Fase 0 (tracker solo + card viral).
 > Última atualização: junho/2026. Valores em USD/mês.
@@ -12,9 +12,11 @@
 - **Dados no cliente:** TanStack Query (cache + persistência em IndexedDB)
 - **Backend:** Firebase — Auth + Firestore + Cloud Functions
 - **Hosting:** Cloudflare Pages / Vercel (estático, free tier) — fora do Firebase para economizar banda
-- **Catálogo:** TMDB (filme/série) + AniList (anime) — **APIs gratuitas**
+- **Catálogo:** TMDB (filme/série) + AniList (anime) — **gratuitas no uso não-comercial** (TMDB vira US$ 149/mês ao monetizar — ver nota)
 
-As APIs de catálogo **não custam dinheiro**. O cache no Firestore existe para (a) não tomar rate-limit e (b) velocidade — não para reduzir custo de API.
+As APIs de catálogo são **gratuitas enquanto o projeto é não-comercial** (sem receita). O cache no Firestore existe para (a) não tomar rate-limit e (b) velocidade — não para reduzir custo de API.
+
+> ⚠️ **Licença TMDB (importante na monetização):** a *developer key* é grátis **só até gerar receita** (anúncios ou features pagas). Ao monetizar, o TMDB exige a **licença comercial — US$ 149/mês** (AniList segue grátis). Na Fase 0 (pré-receita) a developer key é legítima. Em qualquer caso a **atribuição** é obrigatória (logo TMDB + *"This product uses the TMDB API but is not endorsed or certified by TMDB"*). Fonte: [Termos da API TMDB](https://www.themoviedb.org/api-terms-of-use). US$ 149/mês é trivial perto da receita de um produto que monetiza — não muda o veredito (o risco é distribuição, não dados/infra).
 
 ---
 
